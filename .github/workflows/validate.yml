@@ -1,0 +1,38 @@
+name: Validate project
+
+# Hand-authored Godot scenes break quietly: a mistyped NodePath resolves to null
+# at runtime and the feature simply does not happen, with no error anywhere. This
+# runs the structural validator on every push so that class of mistake is caught
+# in review rather than in a playtest.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate scenes, scripts and resources
+        run: python3 tools/validate_project.py .
+
+      - name: Confirm the validator actually fails on a broken reference
+        # A validator that silently stops checking is worse than no validator, so
+        # prove on every run that it still rejects a deliberately broken project.
+        run: |
+          cp scenes/vehicles/tactical_suv.tscn /tmp/tactical_suv.bak
+          sed -i 's|surface_path = NodePath("../../Surfaces/Hood")|surface_path = NodePath("../../Surfaces/DoesNotExist")|' scenes/vehicles/tactical_suv.tscn
+          if python3 tools/validate_project.py . ; then
+            echo "::error::validator passed a project with a broken NodePath"
+            cp /tmp/tactical_suv.bak scenes/vehicles/tactical_suv.tscn
+            exit 1
+          fi
+          cp /tmp/tactical_suv.bak scenes/vehicles/tactical_suv.tscn
+          echo "Validator correctly rejected the broken reference."

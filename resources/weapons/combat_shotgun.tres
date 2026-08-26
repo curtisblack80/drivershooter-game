@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/weapon_definition.gd" id="1_weapon_def"]
+
+[resource]
+script = ExtResource("1_weapon_def")
+weapon_id = &"combat_shotgun"
+display_name = "Breacher 12"
+fire_mode = 0
+damage = 13.0
+damage_type = 0
+pellets = 8
+max_range = 45.0
+damage_at_max_range = 0.2
+rounds_per_minute = 85.0
+automatic = false
+magazine_size = 6
+reload_seconds = 2.9
+spread_degrees = 6.5
+aim_spread_degrees = 4.2
+spread_growth_per_shot = 0.0
+spread_recovery_per_second = 10.0
+max_extra_spread_degrees = 0.0
+tracer_color = Color(1, 0.72, 0.42, 1)
+tracer_lifetime = 0.05

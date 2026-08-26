@@ -1,0 +1,145 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0705882, 0.0784314, 0.0941176, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 28
+
+[node name="Layout" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "DRIVER SHOOTER"
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+text = "Four-player co-op. One vehicle. It is the base, the weapon and the problem."
+horizontal_alignment = 1
+
+[node name="GapTop" type="Control" parent="Center/Panel/Margin/Layout"]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+
+[node name="NameRow" type="HBoxContainer" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="NameLabel" type="Label" parent="Center/Panel/Margin/Layout/NameRow"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Callsign"
+vertical_alignment = 1
+
+[node name="NameEdit" type="LineEdit" parent="Center/Panel/Margin/Layout/NameRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+max_length = 20
+
+[node name="AddressRow" type="HBoxContainer" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AddressLabel" type="Label" parent="Center/Panel/Margin/Layout/AddressRow"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Host"
+vertical_alignment = 1
+
+[node name="AddressEdit" type="LineEdit" parent="Center/Panel/Margin/Layout/AddressRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+placeholder_text = "127.0.0.1"
+
+[node name="PortRow" type="HBoxContainer" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PortLabel" type="Label" parent="Center/Panel/Margin/Layout/PortRow"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Port"
+vertical_alignment = 1
+
+[node name="PortEdit" type="LineEdit" parent="Center/Panel/Margin/Layout/PortRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+
+[node name="GapButtons" type="Control" parent="Center/Panel/Margin/Layout"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="HostButton" type="Button" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Host Match"
+
+[node name="JoinButton" type="Button" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Join Match"
+
+[node name="QuitButton" type="Button" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="ErrorLabel" type="Label" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94, 0.51, 0.42, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VersionLabel" type="Label" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.49, 0.55, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1

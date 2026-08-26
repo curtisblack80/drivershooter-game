@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/weapon_definition.gd" id="1_weapon_def"]
+
+[resource]
+script = ExtResource("1_weapon_def")
+weapon_id = &"assault_rifle"
+display_name = "MK4 Carbine"
+fire_mode = 0
+damage = 21.0
+damage_type = 0
+pellets = 1
+max_range = 180.0
+damage_at_max_range = 0.5
+rounds_per_minute = 540.0
+automatic = true
+magazine_size = 30
+reload_seconds = 2.1
+spread_degrees = 2.4
+aim_spread_degrees = 0.7
+spread_growth_per_shot = 0.32
+spread_recovery_per_second = 7.5
+max_extra_spread_degrees = 3.4
+tracer_color = Color(1, 0.86, 0.5, 1)
+tracer_lifetime = 0.06

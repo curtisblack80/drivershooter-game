@@ -1,0 +1,137 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/lobby_ui.gd" id="1_lobby"]
+
+[node name="Lobby" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lobby")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0705882, 0.0784314, 0.0941176, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 26
+
+[node name="Layout" type="VBoxContainer" parent="Center/Panel/Margin"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "CREW LOBBY"
+horizontal_alignment = 1
+
+[node name="VehicleLabel" type="Label" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.72, 0.82, 1)
+theme_override_font_sizes/font_size = 15
+text = "Vehicle:"
+horizontal_alignment = 1
+
+[node name="RosterHeading" type="Label" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)
+theme_override_font_sizes/font_size = 13
+text = "CREW"
+
+[node name="RosterList" type="VBoxContainer" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="RoleHeading" type="Label" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.6, 0.66, 1)
+theme_override_font_sizes/font_size = 13
+text = "PREFERRED ROLE  (a role is a loadout, not a lock — any crew member can take any seat)"
+autowrap_mode = 2
+
+[node name="RoleButtons" type="HBoxContainer" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RoleDriver" type="Button" parent="Center/Panel/Margin/Layout/RoleButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Driver"
+
+[node name="RoleGunner" type="Button" parent="Center/Panel/Margin/Layout/RoleButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Gunner"
+
+[node name="RoleEngineer" type="Button" parent="Center/Panel/Margin/Layout/RoleButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Engineer"
+
+[node name="StatusLabel" type="Label" parent="Center/Panel/Margin/Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.78, 0.85, 1)
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ActionButtons" type="HBoxContainer" parent="Center/Panel/Margin/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LeaveButton" type="Button" parent="Center/Panel/Margin/Layout/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Leave"
+
+[node name="ReadyButton" type="Button" parent="Center/Panel/Margin/Layout/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ready"
+
+[node name="StartButton" type="Button" parent="Center/Panel/Margin/Layout/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Start Match"
