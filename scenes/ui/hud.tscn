@@ -1,0 +1,189 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Crosshair" type="Control" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.0
+offset_top = -7.0
+offset_right = 7.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Dot" type="ColorRect" parent="Root/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.85)
+
+[node name="Ring" type="ColorRect" parent="Root/Crosshair"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.25)
+
+[node name="TopLeft" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 320.0
+offset_bottom = 92.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="RoleLabel" type="Label" parent="Root/TopLeft"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.89, 0.94, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="StateLabel" type="Label" parent="Root/TopLeft"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.58, 0.65, 0.73, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="PromptLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -136.0
+offset_right = 320.0
+offset_bottom = -108.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.72, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="BottomLeft" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -86.0
+offset_right = 282.0
+offset_bottom = -22.0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="Root/BottomLeft"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 18)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="AmmoLabel" type="Label" parent="Root/BottomLeft"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="BottomRight" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_top = -260.0
+offset_right = -22.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 2
+
+[node name="SpeedLabel" type="Label" parent="Root/BottomRight"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 2
+
+[node name="ComponentHeading" type="Label" parent="Root/BottomRight"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.56, 0.63, 1)
+theme_override_font_sizes/font_size = 12
+text = "VEHICLE STATUS"
+horizontal_alignment = 2
+
+[node name="ComponentList" type="VBoxContainer" parent="Root/BottomRight"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 1
+alignment = 2
+
+[node name="DebugPanel" type="PanelContainer" parent="Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 18.0
+offset_right = -22.0
+offset_bottom = 250.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="DebugMargin" type="MarginContainer" parent="Root/DebugPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="DebugLabel" type="Label" parent="Root/DebugPanel/DebugMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.85, 0.7, 1)
+theme_override_font_sizes/font_size = 12

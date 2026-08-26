@@ -1,0 +1,176 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/maps/test_arena.gd" id="1_arena"]
+[ext_resource type="PackedScene" path="res://scenes/vehicles/tactical_suv.tscn" id="2_vehicle"]
+[ext_resource type="Script" path="res://scripts/systems/crew_spawner.gd" id="3_crew_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/player/player_character.tscn" id="4_player"]
+[ext_resource type="Script" path="res://scripts/systems/enemy_spawner.gd" id="5_enemy_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/enemy_grunt.tscn" id="6_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="7_hud"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.278431, 0.376471, 0.529412, 1)
+sky_horizon_color = Color(0.6, 0.635294, 0.670588, 1)
+ground_bottom_color = Color(0.164706, 0.156863, 0.145098, 1)
+ground_horizon_color = Color(0.454902, 0.443137, 0.415686, 1)
+
+[sub_resource type="Sky" id="Sky_sky"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_sky")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.607843, 0.639216, 0.678431, 1)
+fog_density = 0.0018
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(400, 2, 400)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.298039, 0.317647, 0.286275, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+material = SubResource("StandardMaterial3D_ground")
+size = Vector3(400, 2, 400)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_obstacle"]
+albedo_color = Color(0.415686, 0.396078, 0.352941, 1)
+roughness = 0.85
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(2.5, 5, 2.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+material = SubResource("StandardMaterial3D_obstacle")
+size = Vector3(2.5, 5, 2.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(16, 3.5, 1.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_obstacle")
+size = Vector3(16, 3.5, 1.2)
+
+[node name="TestArena" type="Node3D"]
+script = ExtResource("1_arena")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819, 0, 0.574, 0.4397, 0.643, -0.6274, -0.3691, 0.766, 0.5266, 0, 24, 0)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ground")
+
+[node name="Obstacles" type="Node3D" parent="."]
+
+[node name="PillarA" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2.5, -18)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Obstacles/PillarA"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Mesh" type="MeshInstance3D" parent="Obstacles/PillarA"]
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="PillarB" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 2.5, 12)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Obstacles/PillarB"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Mesh" type="MeshInstance3D" parent="Obstacles/PillarB"]
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="PillarC" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.5, 34)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Obstacles/PillarC"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="Mesh" type="MeshInstance3D" parent="Obstacles/PillarC"]
+mesh = SubResource("BoxMesh_pillar")
+
+[node name="WallNorth" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 1.75, -40)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Obstacles/WallNorth"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Mesh" type="MeshInstance3D" parent="Obstacles/WallNorth"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="WallEast" type="StaticBody3D" parent="Obstacles"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 46, 1.75, 6)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="Obstacles/WallEast"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Mesh" type="MeshInstance3D" parent="Obstacles/WallEast"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Vehicle" parent="." instance=ExtResource("2_vehicle")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+
+[node name="CrewSpawner" type="Node3D" parent="."]
+script = ExtResource("3_crew_spawner")
+player_scene = ExtResource("4_player")
+vehicle_path = NodePath("../Vehicle")
+
+[node name="EnemySpawner" type="Node3D" parent="."]
+script = ExtResource("5_enemy_spawner")
+enemy_scene = ExtResource("6_enemy")
+spawn_count = 8
+fallback_radius = 45.0
+
+[node name="Spawn1" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, -30)
+
+[node name="Spawn2" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -20)
+
+[node name="Spawn3" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 18)
+
+[node name="Spawn4" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 38)
+
+[node name="Spawn5" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -44)
+
+[node name="Spawn6" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, 2)
+
+[node name="Spawn7" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 44)
+
+[node name="Spawn8" type="Marker3D" parent="EnemySpawner"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 30)
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]

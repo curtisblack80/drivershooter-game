@@ -1,0 +1,517 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_controller.gd" id="1_controller"]
+[ext_resource type="Resource" path="res://resources/vehicles/tactical_suv.tres" id="2_definition"]
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_rig.gd" id="3_rig"]
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_surface.gd" id="4_surface"]
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_attachment_point.gd" id="5_point"]
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_traversal_link.gd" id="6_link"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]
+size = Vector3(2, 1.2, 4.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cabin"]
+size = Vector3(1.86, 0.62, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.317647, 0.352941, 0.317647, 1)
+metallic = 0.2
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_chassis"]
+material = SubResource("StandardMaterial3D_body")
+size = Vector3(2, 1.2, 4.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cabin"]
+albedo_color = Color(0.235294, 0.290196, 0.341176, 1)
+metallic = 0.35
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_cabin"]
+material = SubResource("StandardMaterial3D_cabin")
+size = Vector3(1.86, 0.62, 2.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wheel"]
+albedo_color = Color(0.109804, 0.113725, 0.121569, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
+material = SubResource("StandardMaterial3D_wheel")
+top_radius = 0.36
+bottom_radius = 0.36
+height = 0.26
+
+[node name="TacticalSUV" type="VehicleBody3D"]
+collision_layer = 2
+collision_mask = 9
+mass = 2100.0
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.25, 0)
+continuous_cd = true
+script = ExtResource("1_controller")
+definition = ExtResource("2_definition")
+rig_path = NodePath("CrewRig")
+wheel_front_left_path = NodePath("Wheels/FrontLeft")
+wheel_front_right_path = NodePath("Wheels/FrontRight")
+wheel_rear_left_path = NodePath("Wheels/RearLeft")
+wheel_rear_right_path = NodePath("Wheels/RearRight")
+
+[node name="ChassisCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("BoxShape3D_chassis")
+
+[node name="CabinCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66, -0.2)
+shape = SubResource("BoxShape3D_cabin")
+
+[node name="ChassisMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("BoxMesh_chassis")
+
+[node name="CabinMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66, -0.2)
+mesh = SubResource("BoxMesh_cabin")
+
+[node name="Wheels" type="Node3D" parent="."]
+
+[node name="FrontLeft" type="VehicleWheel3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.72, -1.6)
+use_as_traction = true
+use_as_steering = true
+wheel_roll_influence = 0.15
+wheel_radius = 0.36
+wheel_rest_length = 0.36
+wheel_friction_slip = 3.4
+suspension_travel = 0.28
+suspension_stiffness = 34.0
+suspension_max_force = 9000.0
+damping_compression = 0.62
+damping_relaxation = 0.9
+
+[node name="Mesh" type="MeshInstance3D" parent="Wheels/FrontLeft"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.36, 0)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="FrontRight" type="VehicleWheel3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.72, -1.6)
+use_as_traction = true
+use_as_steering = true
+wheel_roll_influence = 0.15
+wheel_radius = 0.36
+wheel_rest_length = 0.36
+wheel_friction_slip = 3.4
+suspension_travel = 0.28
+suspension_stiffness = 34.0
+suspension_max_force = 9000.0
+damping_compression = 0.62
+damping_relaxation = 0.9
+
+[node name="Mesh" type="MeshInstance3D" parent="Wheels/FrontRight"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.36, 0)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="RearLeft" type="VehicleWheel3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0.72, 1.6)
+use_as_traction = true
+wheel_roll_influence = 0.15
+wheel_radius = 0.36
+wheel_rest_length = 0.36
+wheel_friction_slip = 3.4
+suspension_travel = 0.28
+suspension_stiffness = 34.0
+suspension_max_force = 9000.0
+damping_compression = 0.62
+damping_relaxation = 0.9
+
+[node name="Mesh" type="MeshInstance3D" parent="Wheels/RearLeft"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.36, 0)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="RearRight" type="VehicleWheel3D" parent="Wheels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.95, 0.72, 1.6)
+use_as_traction = true
+wheel_roll_influence = 0.15
+wheel_radius = 0.36
+wheel_rest_length = 0.36
+wheel_friction_slip = 3.4
+suspension_travel = 0.28
+suspension_stiffness = 34.0
+suspension_max_force = 9000.0
+damping_compression = 0.62
+damping_relaxation = 0.9
+
+[node name="Mesh" type="MeshInstance3D" parent="Wheels/RearRight"]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, -0.36, 0)
+mesh = SubResource("CylinderMesh_wheel")
+
+[node name="CrewRig" type="Node3D" parent="."]
+script = ExtResource("3_rig")
+
+[node name="Surfaces" type="Node3D" parent="CrewRig"]
+
+[node name="CabinFloor" type="Node3D" parent="CrewRig/Surfaces"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0.1)
+script = ExtResource("4_surface")
+surface_name = &"cabin_floor"
+half_extents = Vector2(0.68, 0.85)
+edge_margin = 0.1
+walk_speed_scale = 0.8
+is_interior = true
+exposure = 0.15
+
+[node name="Hood" type="Node3D" parent="CrewRig/Surfaces"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, -1.85)
+script = ExtResource("4_surface")
+surface_name = &"hood"
+half_extents = Vector2(0.75, 0.5)
+edge_margin = 0.12
+walk_speed_scale = 0.85
+is_interior = false
+exposure = 1.0
+
+[node name="Roof" type="Node3D" parent="CrewRig/Surfaces"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98, -0.2)
+script = ExtResource("4_surface")
+surface_name = &"roof"
+half_extents = Vector2(0.8, 0.95)
+edge_margin = 0.12
+walk_speed_scale = 1.0
+is_interior = false
+exposure = 1.0
+
+[node name="Bed" type="Node3D" parent="CrewRig/Surfaces"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, 1.6)
+script = ExtResource("4_surface")
+surface_name = &"bed"
+half_extents = Vector2(0.85, 0.7)
+edge_margin = 0.12
+walk_speed_scale = 0.95
+is_interior = false
+exposure = 0.9
+
+[node name="Points" type="Node3D" parent="CrewRig"]
+
+[node name="DriverSeat" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0.64, -0.6)
+script = ExtResource("5_point")
+point_name = &"driver_seat"
+point_type = 0
+exclusive = true
+is_driver_seat = true
+interaction_radius = 1.0
+prompt_text = "Take the wheel"
+camera_distance_bonus = -0.2
+camera_height_bonus = 0.0
+
+[node name="FrontPassengerSeat" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.64, -0.6)
+script = ExtResource("5_point")
+point_name = &"front_passenger_seat"
+point_type = 0
+exclusive = true
+interaction_radius = 1.0
+prompt_text = "Take front seat"
+
+[node name="RearLeftSeat" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0.64, 0.42)
+script = ExtResource("5_point")
+point_name = &"rear_left_seat"
+point_type = 0
+exclusive = true
+interaction_radius = 1.0
+prompt_text = "Take rear left seat"
+
+[node name="RearRightSeat" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.64, 0.42)
+script = ExtResource("5_point")
+point_name = &"rear_right_seat"
+point_type = 0
+exclusive = true
+interaction_radius = 1.0
+prompt_text = "Take rear right seat"
+
+[node name="CabinAnchorFront" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, -0.2)
+script = ExtResource("5_point")
+point_name = &"cabin_front"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/CabinFloor")
+
+[node name="CabinAnchorRear" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0.62)
+script = ExtResource("5_point")
+point_name = &"cabin_rear"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/CabinFloor")
+
+[node name="HoodAnchor" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, -1.62)
+script = ExtResource("5_point")
+point_name = &"hood_anchor"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/Hood")
+
+[node name="RoofAnchorFront" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98, -0.95)
+script = ExtResource("5_point")
+point_name = &"roof_front"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/Roof")
+
+[node name="RoofAnchorRear" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98, 0.5)
+script = ExtResource("5_point")
+point_name = &"roof_rear"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/Roof")
+
+[node name="BedAnchor" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, 1.25)
+script = ExtResource("5_point")
+point_name = &"bed_anchor"
+point_type = 1
+exclusive = false
+interaction_radius = 1.0
+surface_path = NodePath("../../Surfaces/Bed")
+
+[node name="RepairEngine" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32, -2)
+script = ExtResource("5_point")
+point_name = &"repair_engine"
+point_type = 2
+exclusive = false
+repair_component = 0
+interaction_radius = 1.1
+
+[node name="RepairRadiator" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2.35)
+script = ExtResource("5_point")
+point_name = &"repair_radiator"
+point_type = 2
+exclusive = false
+repair_component = 8
+interaction_radius = 1.1
+
+[node name="RepairTransmission" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.9)
+script = ExtResource("5_point")
+point_name = &"repair_transmission"
+point_type = 2
+exclusive = false
+repair_component = 1
+interaction_radius = 1.1
+
+[node name="RepairFuelTank" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 1.95)
+script = ExtResource("5_point")
+point_name = &"repair_fuel_tank"
+point_type = 2
+exclusive = false
+repair_component = 2
+interaction_radius = 1.1
+
+[node name="RepairWheelFrontLeft" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.5, -1.6)
+script = ExtResource("5_point")
+point_name = &"repair_wheel_fl"
+point_type = 2
+exclusive = false
+repair_component = 3
+interaction_radius = 1.1
+
+[node name="RepairWheelFrontRight" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.5, -1.6)
+script = ExtResource("5_point")
+point_name = &"repair_wheel_fr"
+point_type = 2
+exclusive = false
+repair_component = 4
+interaction_radius = 1.1
+
+[node name="RepairWheelRearLeft" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.5, 1.6)
+script = ExtResource("5_point")
+point_name = &"repair_wheel_rl"
+point_type = 2
+exclusive = false
+repair_component = 5
+interaction_radius = 1.1
+
+[node name="RepairWheelRearRight" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.5, 1.6)
+script = ExtResource("5_point")
+point_name = &"repair_wheel_rr"
+point_type = 2
+exclusive = false
+repair_component = 6
+interaction_radius = 1.1
+
+[node name="RepairArmor" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("5_point")
+point_name = &"repair_armor"
+point_type = 2
+exclusive = false
+repair_component = 7
+interaction_radius = 1.2
+
+[node name="RepairElectrical" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.75, -1.2)
+script = ExtResource("5_point")
+point_name = &"repair_electrical"
+point_type = 2
+exclusive = false
+repair_component = 9
+interaction_radius = 1.0
+
+[node name="ExitLeft" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, 0.05, 0)
+script = ExtResource("5_point")
+point_name = &"exit_left"
+point_type = 5
+exclusive = false
+interaction_radius = 1.7
+prompt_text = "Dismount (left)"
+
+[node name="ExitRight" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35, 0.05, 0)
+script = ExtResource("5_point")
+point_name = &"exit_right"
+point_type = 5
+exclusive = false
+interaction_radius = 1.7
+prompt_text = "Dismount (right)"
+
+[node name="EntryLeft" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, 0.05, 0)
+script = ExtResource("5_point")
+point_name = &"entry_left"
+point_type = 4
+exclusive = false
+interaction_radius = 2.4
+prompt_text = "Board vehicle"
+surface_path = NodePath("../../Surfaces/CabinFloor")
+
+[node name="EntryRight" type="Node3D" parent="CrewRig/Points"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35, 0.05, 0)
+script = ExtResource("5_point")
+point_name = &"entry_right"
+point_type = 4
+exclusive = false
+interaction_radius = 2.4
+prompt_text = "Board vehicle"
+surface_path = NodePath("../../Surfaces/CabinFloor")
+
+[node name="Links" type="Node3D" parent="CrewRig"]
+
+[node name="DriverToCabin" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"driver_to_cabin"
+from_point_path = NodePath("../../Points/DriverSeat")
+to_point_path = NodePath("../../Points/CabinAnchorFront")
+bidirectional = true
+kind = 0
+duration = 0.55
+arc_height = 0.12
+prompt_text = "Stand up"
+
+[node name="PassengerToCabin" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"passenger_to_cabin"
+from_point_path = NodePath("../../Points/FrontPassengerSeat")
+to_point_path = NodePath("../../Points/CabinAnchorFront")
+bidirectional = true
+kind = 0
+duration = 0.55
+arc_height = 0.12
+prompt_text = "Stand up"
+
+[node name="RearLeftToCabin" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"rear_left_to_cabin"
+from_point_path = NodePath("../../Points/RearLeftSeat")
+to_point_path = NodePath("../../Points/CabinAnchorRear")
+bidirectional = true
+kind = 0
+duration = 0.55
+arc_height = 0.12
+prompt_text = "Stand up"
+
+[node name="RearRightToCabin" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"rear_right_to_cabin"
+from_point_path = NodePath("../../Points/RearRightSeat")
+to_point_path = NodePath("../../Points/CabinAnchorRear")
+bidirectional = true
+kind = 0
+duration = 0.55
+arc_height = 0.12
+prompt_text = "Stand up"
+
+[node name="CabinFrontToHood" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"cabin_front_to_hood"
+from_point_path = NodePath("../../Points/CabinAnchorFront")
+to_point_path = NodePath("../../Points/HoodAnchor")
+bidirectional = true
+kind = 1
+duration = 1.15
+arc_height = 0.85
+max_vehicle_speed_kph = 70.0
+prompt_text = "Climb out onto the hood"
+
+[node name="CabinRearToRoof" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"cabin_rear_to_roof"
+from_point_path = NodePath("../../Points/CabinAnchorRear")
+to_point_path = NodePath("../../Points/RoofAnchorRear")
+bidirectional = true
+kind = 1
+duration = 1.25
+arc_height = 0.95
+max_vehicle_speed_kph = 70.0
+prompt_text = "Climb through window to the roof"
+
+[node name="CabinRearToBed" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"cabin_rear_to_bed"
+from_point_path = NodePath("../../Points/CabinAnchorRear")
+to_point_path = NodePath("../../Points/BedAnchor")
+bidirectional = true
+kind = 1
+duration = 1.0
+arc_height = 0.7
+max_vehicle_speed_kph = 70.0
+prompt_text = "Climb back to the cargo bed"
+
+[node name="RoofFrontToHood" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"roof_front_to_hood"
+from_point_path = NodePath("../../Points/RoofAnchorFront")
+to_point_path = NodePath("../../Points/HoodAnchor")
+bidirectional = true
+kind = 2
+duration = 0.8
+arc_height = 0.35
+prompt_text = "Drop down to the hood"
+
+[node name="RoofRearToBed" type="Node3D" parent="CrewRig/Links"]
+script = ExtResource("6_link")
+link_name = &"roof_rear_to_bed"
+from_point_path = NodePath("../../Points/RoofAnchorRear")
+to_point_path = NodePath("../../Points/BedAnchor")
+bidirectional = true
+kind = 4
+duration = 0.7
+arc_height = 0.3
+prompt_text = "Drop down to the cargo bed"

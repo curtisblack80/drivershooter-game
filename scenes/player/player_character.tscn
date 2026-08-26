@@ -1,0 +1,81 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player_character.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/player/crew_controller.gd" id="2_crew"]
+[ext_resource type="Script" path="res://scripts/systems/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon.gd" id="4_weapon"]
+[ext_resource type="Resource" path="res://resources/weapons/assault_rifle.tres" id="5_rifle"]
+[ext_resource type="Script" path="res://scripts/player/player_camera_rig.gd" id="6_camera"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.34
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+albedo_color = Color(0.396078, 0.529412, 0.658824, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
+material = SubResource("StandardMaterial3D_body")
+radius = 0.34
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_head"]
+albedo_color = Color(0.905882, 0.780392, 0.611765, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+material = SubResource("StandardMaterial3D_head")
+size = Vector3(0.22, 0.22, 0.26)
+
+[sub_resource type="BoxMesh" id="BoxMesh_weapon"]
+size = Vector3(0.07, 0.12, 0.62)
+
+[node name="PlayerCharacter" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_player")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_body")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68, -0.06)
+mesh = SubResource("BoxMesh_head")
+
+[node name="Crew" type="Node" parent="."]
+script = ExtResource("2_crew")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_health")
+max_health = 100.0
+
+[node name="WeaponPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 1.34, -0.18)
+
+[node name="Weapon" type="Node3D" parent="WeaponPivot"]
+script = ExtResource("4_weapon")
+definition = ExtResource("5_rifle")
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="WeaponPivot/Weapon"]
+mesh = SubResource("BoxMesh_weapon")
+
+[node name="Muzzle" type="Node3D" parent="WeaponPivot/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.36)
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("6_camera")
+
+[node name="Arm" type="SpringArm3D" parent="CameraRig"]
+collision_mask = 1
+spring_length = 3.2
+margin = 0.25
+
+[node name="Camera" type="Camera3D" parent="CameraRig/Arm"]
+current = false
+fov = 74.0
+near = 0.08
+far = 900.0

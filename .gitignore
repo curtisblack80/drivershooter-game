@@ -1,0 +1,28 @@
+# Godot 4 auto-generated folders and files
+.godot/
+/android/
+export_presets.cfg
+
+# Build artifacts
+build/
+exports/
+*.pck
+*.zip
+*.exe
+*.x86_64
+*.dmg
+*.apk
+*.aab
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Python tooling used by tools/validate_project.py
+__pycache__/
+*.pyc
+.venv/

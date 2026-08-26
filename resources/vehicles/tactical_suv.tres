@@ -1,0 +1,37 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/vehicle/vehicle_definition.gd" id="1_vehicle_def"]
+
+[resource]
+script = ExtResource("1_vehicle_def")
+vehicle_id = &"tactical_suv"
+display_name = "Tactical SUV"
+description = "The balanced starting platform. Enough armour to survive a first contact, enough speed to leave it, and a roof and hood wide enough for two crew to work on."
+mass = 2100.0
+max_speed_kph = 118.0
+engine_force = 3200.0
+reverse_force = 1400.0
+brake_force = 62.0
+max_steer_angle_deg = 30.0
+steer_half_life = 0.1
+steer_authority_at_top_speed = 0.3
+downforce_per_speed = 110.0
+handbrake_grip = 0.35
+allow_self_right = true
+self_right_delay = 2.5
+self_right_torque = 45.0
+armor_damage_reduction = 0.3
+component_max_health = {
+0: 260.0,
+1: 180.0,
+2: 140.0,
+3: 90.0,
+4: 90.0,
+5: 90.0,
+6: 90.0,
+7: 400.0,
+8: 110.0,
+9: 120.0
+}
+crew_capacity = 4
+camera_distance_bonus = 0.4
